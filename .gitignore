@@ -1,0 +1,54 @@
+# Virtual Environment
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# Model files
+*.pt
+*.onnx
+*.weights
+
+# Training outputs
+runs/
+
+# Dataset (caso fique muito grande)
+data/raw/
+data/processed/
+
+# Reports
+reports/pdf/
+
+# Misc
+*.tmp
