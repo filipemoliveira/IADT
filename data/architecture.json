@@ -1,0 +1,14 @@
+[
+  {
+    "name": "User",
+    "component_type": "user"
+  },
+  {
+    "name": "API",
+    "component_type": "api"
+  },
+  {
+    "name": "Database",
+    "component_type": "database"
+  }
+]
