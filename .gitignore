@@ -1,3 +1,7 @@
+# Dataset
+data/original_dataset/
+data/architecture_dataset/
+
 # Virtual Environment
 .venv/
 venv/
@@ -46,6 +50,7 @@ runs/
 # Dataset (caso fique muito grande)
 data/raw/
 data/processed/
+data/
 
 # Reports
 reports/pdf/

@@ -1,0 +1,9 @@
+class_id,class_name,train_objects,validation_objects,total_objects,percentage
+0,user,0,0,0,0.00
+1,server,2897,683,3580,13.44
+2,process,3994,946,4940,18.54
+3,database,3819,1031,4850,18.21
+4,storage,3839,941,4780,17.94
+5,load_balancer,3742,968,4710,17.68
+6,firewall,1163,297,1460,5.48
+7,external_system,1843,477,2320,8.71
