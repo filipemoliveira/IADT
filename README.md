@@ -1,60 +1,60 @@
-# IADT - Intelligent Architecture Diagram Threat Modeling
+# IADT - Análise Inteligente de Ameaças em Diagramas de Arquitetura
 
-Automated threat modeling for software architecture diagrams using Computer Vision and the STRIDE methodology.
+Sistema para automação da modelagem de ameaças em diagramas de arquitetura utilizando Visão Computacional e a metodologia STRIDE.
 
-This project detects architectural components from system diagrams using a custom-trained YOLO model and performs a preliminary STRIDE-based threat analysis, generating a PDF report with identified threats and mitigation recommendations.
+O projeto identifica automaticamente componentes arquiteturais em diagramas de sistemas por meio de um modelo YOLO treinado especificamente para esse domínio. Após a detecção, é realizada uma análise preliminar baseada na metodologia STRIDE, gerando automaticamente um relatório em PDF contendo as ameaças identificadas e recomendações de mitigação.
 
-> **Academic Project**  
-> Bachelor's Final Project (TCC)
-
----
-
-## Features
-
-- Upload architecture diagrams through a web interface
-- Automatic component detection using YOLO (Ultralytics)
-- STRIDE threat analysis based on detected components
-- Automatic PDF report generation
-- User-friendly interface built with Streamlit
+> **Projeto Acadêmico**  
+> Trabalho de Conclusão de Curso (TCC)
 
 ---
 
-## How it Works
+## Funcionalidades
 
-The application follows the workflow below:
+- Upload de diagramas de arquitetura através de uma interface web
+- Detecção automática de componentes utilizando YOLO (Ultralytics)
+- Análise de ameaças baseada na metodologia STRIDE
+- Geração automática de relatório em PDF
+- Interface intuitiva desenvolvida com Streamlit
 
+---
+
+## Fluxo da Aplicação
+
+O funcionamento da aplicação segue o fluxo abaixo:
+
+```text
+Diagrama de Arquitetura
+          │
+          ▼
+Detecção de Objetos (YOLO)
+          │
+          ▼
+Componentes Detectados
+          │
+          ▼
+Motor de Regras STRIDE
+          │
+          ▼
+Análise de Ameaças
+          │
+          ▼
+Relatório em PDF
 ```
-Architecture Diagram
-        │
-        ▼
-Object Detection (YOLO)
-        │
-        ▼
-Detected Components
-        │
-        ▼
-STRIDE Rule Engine
-        │
-        ▼
-Threat Analysis
-        │
-        ▼
-PDF Report
-```
 
 ---
 
-## Project Structure
+## Estrutura do Projeto
 
 ```text
 IADT/
 │
-├── app.py                  # Streamlit application
+├── app.py                  # Aplicação Streamlit
 ├── requirements.txt
 ├── README.md
 │
 ├── models/
-│   └── best.pt             # Trained YOLO model
+│   └── best.pt             # Modelo YOLO treinado
 │
 ├── src/
 │   ├── analyzer.py
@@ -70,36 +70,36 @@ IADT/
 
 ---
 
-## Installation
+## Instalação
 
-Clone the repository
+Clone o repositório
 
 ```bash
-git clone https://github.com/your-user/IADT.git
+git clone https://github.com/seu-usuario/IADT.git
 cd IADT
 ```
 
-Create a virtual environment
+Crie um ambiente virtual
 
 ```bash
 python -m venv .venv
 ```
 
-Activate the environment
+Ative o ambiente
 
-Windows
+### Windows
 
 ```bash
 .venv\Scripts\activate
 ```
 
-Linux/macOS
+### Linux/macOS
 
 ```bash
 source .venv/bin/activate
 ```
 
-Install dependencies
+Instale as dependências
 
 ```bash
 pip install -r requirements.txt
@@ -107,46 +107,46 @@ pip install -r requirements.txt
 
 ---
 
-## Running the Application
+## Executando a Aplicação
 
-Start Streamlit
+Inicie a aplicação com o Streamlit:
 
 ```bash
 streamlit run app.py
 ```
 
-The application will open in your browser.
+A interface será aberta automaticamente no navegador.
 
 ---
 
 ## Dataset
 
-The object detection model was trained using the dataset below:
+O modelo de detecção foi treinado utilizando o seguinte conjunto de dados:
 
 https://huggingface.co/datasets/guillherms/stride-architecture-components-v1
 
 ---
 
-## Supported Components
+## Componentes Suportados
 
-The model detects architectural components such as:
+Atualmente o modelo é capaz de identificar os seguintes componentes arquiteturais:
 
-- User
-- Server
-- Process
-- Database
-- Storage
+- Usuário
+- Servidor
+- Processo
+- Banco de Dados
+- Armazenamento
 - Firewall
-- Load Balancer
-- External System
+- Balanceador de Carga
+- Sistema Externo
 
 ---
 
-## Threat Modeling
+## Modelagem de Ameaças
 
-Threat identification is based on Microsoft's STRIDE methodology.
+A identificação das ameaças é baseada na metodologia **STRIDE**, proposta pela Microsoft.
 
-Threat categories include:
+As categorias analisadas são:
 
 - Spoofing
 - Tampering
@@ -155,58 +155,61 @@ Threat categories include:
 - Denial of Service
 - Elevation of Privilege
 
-The analysis is performed through a predefined rule base that maps each detected component to potential threats and mitigation recommendations.
+A análise é realizada por meio de uma base de regras previamente definida, que relaciona cada componente arquitetural às possíveis ameaças e respectivas recomendações de mitigação.
 
 ---
 
-## Limitations
+## Limitações
 
-This project performs a **component-based** threat analysis.
+Este projeto realiza uma **análise baseada exclusivamente nos componentes detectados**.
 
-Currently, it **does not**:
+Atualmente, a aplicação **não é capaz de**:
 
-- Detect data flows
-- Identify trust boundaries
-- Infer relationships between components
-- Analyze communication protocols
-- Replace a complete manual threat modeling process
+- Identificar fluxos de dados (*Data Flows*)
+- Detectar *Trust Boundaries*
+- Inferir relacionamentos entre componentes
+- Interpretar protocolos de comunicação
+- Substituir uma modelagem de ameaças completa realizada por especialistas
 
-The generated analysis should be considered as an initial security assessment intended to support software architects and security professionals.
+Portanto, os resultados devem ser interpretados como uma **análise preliminar de apoio**, auxiliando arquitetos de software e profissionais de segurança durante as fases iniciais do processo de modelagem de ameaças.
 
 ---
 
-## Technologies
+## Tecnologias Utilizadas
 
 - Python
 - Streamlit
 - Ultralytics YOLO
-- ReportLab
-- Pillow
 - OpenCV
+- Pillow
+- ReportLab
 
 ---
 
-## Future Work
+## Trabalhos Futuros
 
-Possible improvements include:
+Como possibilidades de evolução do projeto destacam-se:
 
-- Automatic data flow detection
-- Trust boundary identification
-- OCR support
-- Graph-based architecture understanding
-- Integration with Large Language Models (LLMs)
-- Support for additional architectural components
+- Detecção automática de fluxos de dados
+- Identificação de Trust Boundaries
+- Suporte a OCR para leitura de textos dos diagramas
+- Compreensão estrutural do diagrama através de grafos
+- Integração com Modelos de Linguagem (LLMs)
+- Suporte a novos componentes arquiteturais
+- Ampliação da base de regras STRIDE
 
 ---
 
-## Author
+## Autor
 
 **Filipe Mendes**
 
-Bachelor's Final Project
+Trabalho de Conclusão de Curso
+
+Tecnólogo em Análise e Desenvolvimento de Sistemas
 
 ---
 
-## License
+## Licença
 
-This project is available for academic and educational purposes.
+Este projeto foi desenvolvido para fins acadêmicos e educacionais.
