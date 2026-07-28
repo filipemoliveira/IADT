@@ -39,10 +39,9 @@ build/
 dist/
 *.egg-info/
 
-# Model files
-*.pt
+# Model file
 *.onnx
-*.weights
+
 
 # Training outputs
 
