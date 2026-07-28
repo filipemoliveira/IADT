@@ -204,10 +204,6 @@ Como possibilidades de evolução do projeto destacam-se:
 
 **Filipe Mendes**
 
-Trabalho de Conclusão de Curso
-
-Tecnólogo em Análise e Desenvolvimento de Sistemas
-
 ---
 
 ## Licença
