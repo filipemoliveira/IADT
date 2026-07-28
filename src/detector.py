@@ -1,71 +1,115 @@
 from pathlib import Path
+from typing import Any
 
+import numpy as np
+from PIL import Image
 from ultralytics import YOLO
 
-from models import ArchitectureComponent
+
+DEFAULT_MODEL_PATH = Path("../models/best.pt")
 
 
-MODEL_PATH = Path(
-    "models/architecture_detector/weights/best.pt"
-)
+class ArchitectureDetector:
+    """
+    Executa detecção de componentes em diagramas de arquitetura
+    usando um modelo YOLO treinado.
+    """
 
+    def __init__(
+        self,
+        model_path: str | Path = DEFAULT_MODEL_PATH,
+        confidence: float = 0.25,
+    ) -> None:
+        self.model_path = Path(model_path)
+        self.confidence = confidence
 
-def detect_components(
-    image_path: str,
-    confidence: float = 0.40,
-) -> list[ArchitectureComponent]:
-    if not MODEL_PATH.exists():
-        raise FileNotFoundError(
-            f"YOLO model not found: {MODEL_PATH}"
+        if not self.model_path.exists():
+            raise FileNotFoundError(
+                f"Modelo não encontrado em: {self.model_path.resolve()}"
+            )
+
+        self.model = YOLO(str(self.model_path))
+
+    def detect(
+        self,
+        image: Image.Image,
+    ) -> tuple[list[dict[str, Any]], Image.Image]:
+        """
+        Recebe uma imagem PIL e retorna:
+
+        1. Lista de componentes detectados.
+        2. Imagem anotada com bounding boxes.
+        """
+
+        if not isinstance(image, Image.Image):
+            raise TypeError("A imagem deve ser uma instância de PIL.Image.")
+
+        image_rgb = image.convert("RGB")
+
+        results = self.model.predict(
+            source=np.array(image_rgb),
+            conf=self.confidence,
+            verbose=False,
         )
 
-    image = Path(image_path)
+        if not results:
+            return [], image_rgb
 
-    if not image.exists():
-        raise FileNotFoundError(
-            f"Image not found: {image}"
-        )
+        result = results[0]
 
-    model = YOLO(str(MODEL_PATH))
+        detections = self._parse_detections(result)
 
-    results = model.predict(
-        source=str(image),
-        conf=confidence,
-        verbose=False,
-    )
+        annotated_array = result.plot()
+        annotated_array = annotated_array[:, :, ::-1]
 
-    components: list[ArchitectureComponent] = []
-    seen_components: set[str] = set()
+        annotated_image = Image.fromarray(annotated_array)
 
-    for result in results:
+        return detections, annotated_image
+
+    def _parse_detections(
+        self,
+        result: Any,
+    ) -> list[dict[str, Any]]:
+        """
+        Converte o resultado do YOLO em uma lista JSON-friendly.
+        """
+
+        detections: list[dict[str, Any]] = []
+
         if result.boxes is None:
-            continue
+            return detections
 
-        for box in result.boxes:
+        class_names = result.names
+
+        for index, box in enumerate(result.boxes):
             class_id = int(box.cls.item())
-            class_name = result.names[class_id]
+            confidence = float(box.conf.item())
 
-            normalized_name = (
-                class_name
-                .strip()
-                .lower()
-            )
+            coordinates = box.xyxy[0].tolist()
 
-            if normalized_name in seen_components:
-                continue
+            x1, y1, x2, y2 = [
+                round(float(value), 2)
+                for value in coordinates
+            ]
 
-            seen_components.add(normalized_name)
+            width = round(x2 - x1, 2)
+            height = round(y2 - y1, 2)
 
-            components.append(
-                ArchitectureComponent(
-                    name=class_name,
-                    component_type=class_name,
-                )
-            )
+            detection = {
+                "id": index + 1,
+                "class_id": class_id,
+                "class_name": class_names[class_id],
+                "confidence": round(confidence, 4),
+                "bounding_box": {
+                    "x1": x1,
+                    "y1": y1,
+                    "x2": x2,
+                    "y2": y2,
+                    "width": width,
+                    "height": height,
+                },
+            }
 
-    if not components:
-        raise ValueError(
-            "No architecture components were detected."
-        )
+            detections.append(detection)
 
-    return components
+        return detections

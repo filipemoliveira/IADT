@@ -44,6 +44,7 @@ dist/
 
 
 # Training outputs
+runs/
 
 # Dataset (caso fique muito grande)
 data/raw/
